@@ -185,11 +185,13 @@ module Recaptcha
           // Define function so that we can call it again later if we need to reset it
           // This executes reCAPTCHA and then calls our callback.
           function #{recaptcha_v3_execute_function_name(action)}() {
-            grecaptcha.ready(function() {
-              grecaptcha.execute('#{site_key}', {action: '#{action}'}).then(function(token) {
-                #{callback}('#{id}', token)
+            if(window.grecaptcha) {
+              grecaptcha.ready(function() {
+                grecaptcha.execute('#{site_key}', {action: '#{action}'}).then(function(token) {
+                  #{callback}('#{id}', token)
+                });
               });
-            });
+            }
           };
           // Invoke immediately
           #{recaptcha_v3_execute_function_name(action)}()
